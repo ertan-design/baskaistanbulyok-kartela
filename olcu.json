@@ -1,0 +1,297 @@
+{
+ "sema": "biy.kartela.dogrulama.v1",
+ "zaman_utc": "2026-11-24T23:22:02Z",
+ "tarayici": "chromium-1248",
+ "kosular": {
+  "masaustu": {
+   "genislik": 1440,
+   "yukseklik": 900,
+   "ms": 2825,
+   "konsol_hata": [],
+   "sonuc": {
+    "hata": null,
+    "olc": [
+     [
+      "dis",
+      "0",
+      "o"
+     ],
+     [
+      "harita",
+      "0",
+      "o"
+     ],
+     [
+      "dokuma",
+      "52 ms",
+      "o"
+     ],
+     [
+      "mesafe",
+      "0,46 m sapma",
+      "o"
+     ],
+     [
+      "de",
+      "ΔE00 25,4",
+      "o"
+     ],
+     [
+      "kontrast",
+      "12,7 : 1",
+      "o"
+     ],
+     [
+      "cevre",
+      "169 + 3 bina",
+      "o"
+     ],
+     [
+      "butunluk",
+      "✓ 458d54832b8e",
+      "o"
+     ]
+    ],
+    "ms": 52,
+    "gw": 288,
+    "gh": 162,
+    "hucre": 4,
+    "dik": false,
+    "kaynak": [
+     [
+      "/kartela.css",
+      16963
+     ],
+     [
+      "/veri.js",
+      42490
+     ],
+     [
+      "/kartela.js",
+      49368
+     ],
+     [
+      "/veri.json",
+      42392
+     ]
+    ],
+    "tasma": 0,
+    "bolum": 5,
+    "kart": 5,
+    "dort": 4,
+    "harici": 25,
+    "eksikRel": 0,
+    "h1": "Başka İstanbul yok. Kartela: Ataşehir’in gerçek dokusu, plak",
+    "kanvas": [
+     "1152x696",
+     "1152x696",
+     "1152x696",
+     "1152x696",
+     "1152x696",
+     "1152x696"
+    ]
+   }
+  },
+  "mobil": {
+   "genislik": 390,
+   "yukseklik": 844,
+   "ms": 2394,
+   "konsol_hata": [],
+   "sonuc": {
+    "hata": null,
+    "olc": [
+     [
+      "dis",
+      "0",
+      "o"
+     ],
+     [
+      "harita",
+      "0",
+      "o"
+     ],
+     [
+      "dokuma",
+      "30 ms",
+      "o"
+     ],
+     [
+      "mesafe",
+      "0,46 m sapma",
+      "o"
+     ],
+     [
+      "de",
+      "ΔE00 25,4",
+      "o"
+     ],
+     [
+      "kontrast",
+      "12,7 : 1",
+      "o"
+     ],
+     [
+      "cevre",
+      "169 + 3 bina",
+      "o"
+     ],
+     [
+      "butunluk",
+      "✓ 458d54832b8e",
+      "o"
+     ]
+    ],
+    "ms": 30,
+    "gw": 120,
+    "gh": 196,
+    "hucre": 3,
+    "dik": true,
+    "kaynak": [
+     [
+      "/kartela.css",
+      16963
+     ],
+     [
+      "/veri.js",
+      42490
+     ],
+     [
+      "/kartela.js",
+      49368
+     ],
+     [
+      "/veri.json",
+      42392
+     ]
+    ],
+    "tasma": 0,
+    "bolum": 5,
+    "kart": 5,
+    "dort": 4,
+    "harici": 25,
+    "eksikRel": 0,
+    "h1": "Başka İstanbul yok. Kartela: Ataşehir’in gerçek dokusu, plak",
+    "kanvas": [
+     "360x624",
+     "360x624",
+     "360x624",
+     "360x624",
+     "360x624",
+     "360x624"
+    ]
+   }
+  },
+  "ayrik": {
+   "genislik": 1440,
+   "yukseklik": 900,
+   "ms": 2776,
+   "konsol_hata": [],
+   "sonuc": {
+    "hata": null,
+    "olc": [
+     [
+      "dis",
+      "0",
+      "o"
+     ],
+     [
+      "harita",
+      "0",
+      "o"
+     ],
+     [
+      "dokuma",
+      "56 ms",
+      "o"
+     ],
+     [
+      "mesafe",
+      "0,46 m sapma",
+      "o"
+     ],
+     [
+      "de",
+      "ΔE00 25,4",
+      "o"
+     ],
+     [
+      "kontrast",
+      "12,7 : 1",
+      "o"
+     ],
+     [
+      "cevre",
+      "169 + 3 bina",
+      "o"
+     ],
+     [
+      "butunluk",
+      "✓ 458d54832b8e",
+      "o"
+     ]
+    ],
+    "ms": 56,
+    "gw": 288,
+    "gh": 162,
+    "hucre": 4,
+    "dik": false,
+    "kaynak": [
+     [
+      "/kartela.css",
+      16963
+     ],
+     [
+      "/veri.js",
+      42490
+     ],
+     [
+      "/kartela.js",
+      49368
+     ],
+     [
+      "/veri.json",
+      42392
+     ]
+    ],
+    "tasma": 0,
+    "bolum": 5,
+    "kart": 5,
+    "dort": 4,
+    "harici": 25,
+    "eksikRel": 0,
+    "h1": "Başka İstanbul yok. Kartela: Ataşehir’in gerçek dokusu, plak",
+    "kanvas": [
+     "1152x696",
+     "1152x696",
+     "1152x696",
+     "1152x696",
+     "1152x696",
+     "1152x696"
+    ]
+   }
+  }
+ },
+ "dosyalar": {
+  "index.html": {
+   "bayt": 8634,
+   "sha256": "92e0b8d14114314cb6eee336adc107ef880b32bf79f6b5bc5928b1c70e25e13f"
+  },
+  "kartela.css": {
+   "bayt": 16963,
+   "sha256": "8bb98dd9ca22b3eaef8f225b6b1101158179fbb557f63305d8b9f27927ab15a7"
+  },
+  "kartela.js": {
+   "bayt": 49368,
+   "sha256": "ecc88d7a8467a1f80dadc9de39934c6a02cb703b9f1f9836b65969b2e07bd24d"
+  },
+  "veri.js": {
+   "bayt": 42490,
+   "sha256": "93a29000e43e70fb620a1a7fb03e5b12f7085b1de56d9c34c1ecedff92dffd01"
+  },
+  "veri.json": {
+   "bayt": 42392,
+   "sha256": "458d54832b8e11a5a680af608fb3a8e6223141c6ac5d3e414cad4edba990c4ea"
+  }
+ },
+ "sorun": []
+}

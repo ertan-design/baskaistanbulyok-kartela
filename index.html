@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex,nofollow">
+<title>Başka İstanbul Yok · Kartela</title>
+<meta name="description" content="Ataşehir Modern'in üç bloğu ve çevresindeki binaların gerçek ayak izi kumaş olarak dokundu; her renk ayrı bir plaka. Harita değil, kartela. Ölçü ve kanıt sayfada.">
+<link rel="stylesheet" href="kartela.css">
+</head>
+<body data-kip="hikaye">
+<a class="atla" href="#ana">İçeriğe geç</a>
+
+<header class="ust">
+  <a class="marka" href="#plaka"><b>BAŞKA İSTANBUL YOK</b><span>Kartela · Ayrık Plaka</span></a>
+  <nav class="menu" aria-label="Bölümler">
+    <a href="#plaka">Plaka</a><a href="#ucus">Üç çatı</a><a href="#bugun">Bugün</a><a href="#siteler">Dört site</a><a href="#olcu">Ölçü</a>
+  </nav>
+  <div class="kip" role="group" aria-label="Anlatım kipi">
+    <button type="button" data-kip="hikaye" aria-pressed="true">Hikâye</button>
+    <button type="button" data-kip="olcu" aria-pressed="false">Ölçü</button>
+  </div>
+</header>
+
+<main id="ana">
+
+<!-- ===================================================== NUMUNE 01 -->
+<section class="numune kapak" id="plaka" aria-labelledby="h-plaka">
+  <p class="ust-etiket"><span class="no">NUMUNE 01</span><span>Ataşehir Modern · gerçek plan · 1 hücre = <b data-v="metre-hucre">8</b> m</span></p>
+  <h1 id="h-plaka" class="sr">Başka İstanbul yok. Kartela: Ataşehir’in gerçek dokusu, plakalarına ayrılabilen bir kumaş.</h1>
+
+  <div class="tezgah" id="tezgah">
+    <div class="sahne" id="sahne" role="img" aria-label="Dimi dokuma kumaş: BAŞKA İSTANBUL YOK yazısı, Ataşehir Modern’in üç bloğunun ve çevresindeki binaların gerçek plan ayak izi, üç uçuş ipliği ve üç hedef halkası.">
+      <canvas class="kat" data-k="zemin"></canvas>
+      <canvas class="kat" data-k="cevre"></canvas>
+      <canvas class="kat" data-k="yapi"></canvas>
+      <canvas class="kat" data-k="rota"></canvas>
+      <canvas class="kat" data-k="hedef"></canvas>
+      <canvas class="kat" data-k="yazi"></canvas>
+    </div>
+    <div class="isik" id="isik" aria-hidden="true"></div>
+    <ul class="bilgi" id="bilgi" aria-hidden="true"></ul>
+  </div>
+
+  <div class="kapak-alt">
+    <p class="giris">Şehir bir çizgi değil, bir kumaş. Bu numunede Ataşehir Modern’in üç bloğu ve çevresindeki <b data-v="cevre-adet">169</b> binanın gerçek ayak izi dokundu. Her renk ayrı bir plaka: kaydırıcıyı çek, plakalar birbirinden ayrılsın. Ataşehir, bu kartelanın dokunan ilk halkası; İstanbul’un geri kalanı henüz dokunmadı ve dokunmuş gibi gösterilmedi.</p>
+    <div class="kontrol">
+      <label class="ayir" for="ayir"><span>Plakaları ayır</span><input id="ayir" type="range" min="0" max="100" value="0" aria-describedby="ayir-not"></label>
+      <ul class="plakalar" id="plakalar" aria-label="Plakalar"></ul>
+      <p class="not" id="ayir-not">Düğme plakayı açar ya da kapatır; çift tıklayınca yalnız o plaka kalır.</p>
+    </div>
+    <aside class="kunye" aria-label="Kumaş künyesi">
+      <h2>Künye</h2>
+      <dl id="kunye"></dl>
+    </aside>
+  </div>
+</section>
+
+<!-- ===================================================== NUMUNE 02 -->
+<section class="numune" id="ucus" aria-labelledby="h-ucus">
+  <p class="ust-etiket"><span class="no">NUMUNE 02</span><span>Üç çatı · üç iplik</span></p>
+  <h2 id="h-ucus">Çatıdan iplik atılır.</h2>
+  <p class="giris">Üç blok, üç çatı, üç yön: A Arya → Watergarden, B Beste → İstanbul Finans Merkezi, C Opera → Maltepe Miting Alanı. Mesafeler kuş uçuşudur; bu sayfada, kaynak koordinatlardan yeniden hesaplanır.</p>
+
+  <div class="ucus">
+    <figure class="ucus-sahne">
+      <svg id="ucus-svg" viewBox="0 0 1200 560" role="img" aria-labelledby="ucus-baslik ucus-ozet" focusable="false">
+        <title id="ucus-baslik">Üç çatıdan üç hedefe uçuş iplikleri</title>
+        <desc id="ucus-ozet">Soldan sağa üç blok silueti; her çatıdan bir iplik, hedef makarasına uzanır. Dikey sıra kuzeyden güneye: İstanbul Finans Merkezi, Watergarden, Maltepe.</desc>
+      </svg>
+      <figcaption class="ipucu"><span class="g-hikaye">İğne ipliği izler; her halka bir karar noktasıdır.</span><span class="g-olcu">Ölçü kipi: çatıdan süzülme menzili ile hedef uzaklığı aynı ölçekte.</span></figcaption>
+    </figure>
+    <div class="ucus-kart" id="ucus-kart" aria-live="polite"></div>
+  </div>
+  <div class="olcu-seridi g-olcu" id="olcu-seridi" aria-label="Süzülme menzili ve hedef uzaklığı"></div>
+</section>
+
+<!-- ===================================================== NUMUNE 03 -->
+<section class="numune" id="bugun" aria-labelledby="h-bugun">
+  <p class="ust-etiket"><span class="no">NUMUNE 03</span><span>Binaya yeni taşınan misafir</span></p>
+  <h2 id="h-bugun">Bugün neye ihtiyacın var?</h2>
+  <p class="giris">Çoğu soru bir randevu sorusu. Dürüst cevap baştan: <b>terzilerin ve danışmanların canlı takvimi şu an bağlı değil.</b> Bu sayfa müsaitlik iddia etmez; talebini hazırlayacağın gerçek, çalışan sayfalara götürür ve onların kendi cümlesini ölçüm tarihiyle gösterir.</p>
+  <ul class="ihtiyac" id="ihtiyac"></ul>
+</section>
+
+<!-- ===================================================== NUMUNE 04 -->
+<section class="numune" id="siteler" aria-labelledby="h-siteler">
+  <p class="ust-etiket"><span class="no">NUMUNE 04</span><span>Dört site, bir yaşam</span></p>
+  <h2 id="h-siteler">Kent, bina, kumaş, masa.</h2>
+  <p class="giris">Dört canlı site bir yaşamın dört halkasını karşılar. Başka İstanbul Yok bu halkaların üstündeki halkadır: hepsini aynı ipliğe dizer. Aşağıdaki durumlar bu sayfa üretilirken gerçek HTTP isteğiyle ölçüldü.</p>
+  <ol class="dort" id="dort"></ol>
+  <p class="dipnot" id="dort-dipnot"></p>
+</section>
+
+<!-- ===================================================== NUMUNE 05 -->
+<section class="numune" id="olcu" aria-labelledby="h-olcu">
+  <p class="ust-etiket"><span class="no">NUMUNE 05</span><span>Ölçü ve kanıt</span></p>
+  <h2 id="h-olcu">Söylenen her şey ölçülür.</h2>
+  <p class="giris">Aşağıdaki değerler, sayfa açıldığında tarayıcında yeniden hesaplanır. Üretim zamanı ölçümleriyle karşılaştırılır; tutmayan bir değer kırmızı görünür.</p>
+  <div class="olcu-izgara" id="olcu-izgara"></div>
+  <h3 class="alt-baslik">Plakalar ve ayrıklık</h3>
+  <p class="not">ΔE00: iki rengin insan gözüne göre farkı (0 aynı, 100 zıt). Eşik 20: ayrı plaka sayılır. Pantone eşleşmesi yalnız fiziksel numune ölçülürse yazılır; şimdi: ölçülmedi.</p>
+  <div class="de-izgara" id="de-izgara"></div>
+  <h3 class="alt-baslik">Kaynaklar</h3>
+  <ul class="kaynak-liste" id="kaynak-liste"></ul>
+  <h3 class="alt-baslik">Bu sayfada ne yok</h3>
+  <ul class="yok-liste">
+    <li>Harita döşemesi, uydu görüntüsü, sokak panoraması, Google / Mapbox / MapLibre: yok. Yalnız nokta koordinatı ve bina çokgeni var.</li>
+    <li>Canlı müsaitlik, gerçek randevu, ödeme, hesap, çerez, izleyici: yok.</li>
+    <li>Gerçek uçuş ya da ulaşım: yok. Mesafeler kuş uçuşu çizgidir; süzülme oranı bir varsayımdır.</li>
+    <li>baskaistanbulyok.com alan adına bağlantı iddiası: yok. Bu sayfa deneysel sürümdür.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="alt">
+  <p>Konum ve bina geometrisi © <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap katkıcıları</a> (ODbL 1.0). Kumaş, bu sayfanın kendi dokuma motoruyla çizildi; harici betik, yazı tipi ya da görsel yok.</p>
+  <p class="mono">MASA · Başka İstanbul Yok · Kartela · deneysel sürüm · <a href="OLCU_RAPORU.md">OLCU_RAPORU.md</a> · <a href="veri.json">veri.json</a> · <a href="kaynak/osm_cevre.json">kaynak/osm_cevre.json</a> · <a href="kaynak/osm_arama.json">kaynak/osm_arama.json</a> · <a href="kaynak/site_olc.json">kaynak/site_olc.json</a></p>
+</footer>
+
+<noscript><p class="noscript">Dokuma motoru için JavaScript gerekir. Veri ve ölçü raporu betiksiz okunabilir: <a href="OLCU_RAPORU.md">OLCU_RAPORU.md</a>, <a href="veri.json">veri.json</a>.</p></noscript>
+<script src="veri.js"></script>
+<script src="kartela.js"></script>
+</body>
+</html>
