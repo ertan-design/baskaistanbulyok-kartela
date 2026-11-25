@@ -4,6 +4,10 @@ Harita değil, kartela: Ataşehir Modern'in üç bloğu ve çevresindeki 169 bin
 dokunur; her renk ayrı bir **plaka**dır ve kaydırıcıyla birbirinden ayrılır. Üç çatıdan üç hedefe uçuş ipliği, ölçüleriyle birlikte gösterilir.
 Sayfadaki her sayı kaynağı ve ölçüm tarihiyle yazılır; sayfa aynı sayıları tarayıcıda yeniden hesaplar (Numune 05).
 
+Sade sürüm (Dila'nın 8 maddesi): az metin, bölüm başına tek eylem, ayrıntı "Künye / Kaynak / Ölçüm" açılırlarının arkasında. Hareket gerçek ve yönetilebilir:
+saçak rüzgârda sönümlü, sürülen bir salınıcı olarak hesaplanır (yay + sönüm + rüzgâr; kaydırıcı ve imleç yönetir), plakalar kaydırıcıyla ayrılır,
+uçuş iğnesini kullanıcı çatıdan başlatır. Hareket azaltma tercihi açıksa hiçbir şey kendiliğinden oynamaz; kullanıcı kaydırırsa ya da tıklarsa oynar.
+
 - Harici betik, yazı tipi, görsel, harita döşemesi, uydu, sokak panoraması, Google/Mapbox/MapLibre, çerez, izleyici: **yok**.
 - Canlı müsaitlik ve gerçek randevu: **yok**. Terzi/danışman talebi, çalışan "Yaşam Masası" sayfasına bağlanır; kaynak sayfanın kendi cümlesi ölçüm tarihiyle gösterilir.
 - Pantone eşleşmesi: **ölçülmedi** (renkler ekran sRGB değerleridir).

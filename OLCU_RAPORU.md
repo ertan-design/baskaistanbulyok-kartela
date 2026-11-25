@@ -64,11 +64,11 @@ Yöntem: Salt-okur HTTP GET (tek istek/adres, tarayıcı benzeri User-Agent); ya
 
 ## 6. Tarayıcı ölçümü
 
-Tarayıcı: chromium-1248 (headless, sanal zaman 9 sn) · ölçüm 2026-11-24T23:22:02Z.
-- Masaüstü 1440×900: dokuma 52 ms, 288×162 tel, hücre 4 px; yatay taşma 0 px; bölüm 5, ihtiyaç kartı 5, site kartı 4; konsol hatası 0.
-- Mobil 390×844: dikey kompozisyon (120×196 tel), dokuma 30 ms; yatay taşma 0 px; konsol hatası 0.
-- Kaynak istekleri (aynı köken): 4 dosya, toplam 151213 bayt; dış istek 0.
-- Sayfanın kendi ölçü kartları (masaüstü): dis = 0; harita = 0; dokuma = 52 ms; mesafe = 0,46 m sapma; de = ΔE00 25,4; kontrast = 12,7 : 1; cevre = 169 + 3 bina; butunluk = ✓ 458d54832b8e.
+Tarayıcı: chromium-1248 (headless, sanal zaman 9 sn) · ölçüm 2026-11-25T01:46:27Z.
+- Masaüstü 1440×900: dokuma 78 ms, 288×162 tel, hücre 4 px; yatay taşma 0 px; bölüm 5, ihtiyaç kartı 5, site kartı 4; konsol hatası 0.
+- Mobil 390×844: dikey kompozisyon (120×196 tel), dokuma 78 ms; yatay taşma 0 px; konsol hatası 0.
+- Kaynak istekleri (aynı köken): 4 dosya, toplam 158993 bayt; dış istek 0.
+- Sayfanın kendi ölçü kartları (masaüstü): dis = 0; harita = 0; dokuma = 78 ms; mesafe = 0,46 m sapma; de = ΔE00 25,4; kontrast = 12,7 : 1; cevre = 169 + 3 bina; butunluk = ✓ 458d54832b8e.
 - Plaka ayrık görünümü (?ayir=100) hatasız açıldı.
 - Sorun listesi: yok.
 

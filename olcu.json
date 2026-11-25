@@ -1,12 +1,12 @@
 {
  "sema": "biy.kartela.dogrulama.v1",
- "zaman_utc": "2026-11-24T23:22:02Z",
+ "zaman_utc": "2026-11-25T01:46:27Z",
  "tarayici": "chromium-1248",
  "kosular": {
   "masaustu": {
    "genislik": 1440,
    "yukseklik": 900,
-   "ms": 2825,
+   "ms": 3154,
    "konsol_hata": [],
    "sonuc": {
     "hata": null,
@@ -23,7 +23,7 @@
      ],
      [
       "dokuma",
-      "52 ms",
+      "78 ms",
       "o"
      ],
      [
@@ -52,7 +52,7 @@
       "o"
      ]
     ],
-    "ms": 52,
+    "ms": 78,
     "gw": 288,
     "gh": 162,
     "hucre": 4,
@@ -60,7 +60,7 @@
     "kaynak": [
      [
       "/kartela.css",
-      16963
+      19365
      ],
      [
       "/veri.js",
@@ -68,7 +68,7 @@
      ],
      [
       "/kartela.js",
-      49368
+      54746
      ],
      [
       "/veri.json",
@@ -81,8 +81,9 @@
     "dort": 4,
     "harici": 25,
     "eksikRel": 0,
-    "h1": "Başka İstanbul yok. Kartela: Ataşehir’in gerçek dokusu, plak",
+    "h1": "Başka İstanbul yok. Şehir bir kumaş: Ataşehir’in gerçek plan",
     "kanvas": [
+     "1152x696",
      "1152x696",
      "1152x696",
      "1152x696",
@@ -95,7 +96,7 @@
   "mobil": {
    "genislik": 390,
    "yukseklik": 844,
-   "ms": 2394,
+   "ms": 2767,
    "konsol_hata": [],
    "sonuc": {
     "hata": null,
@@ -112,7 +113,7 @@
      ],
      [
       "dokuma",
-      "30 ms",
+      "78 ms",
       "o"
      ],
      [
@@ -141,7 +142,7 @@
       "o"
      ]
     ],
-    "ms": 30,
+    "ms": 78,
     "gw": 120,
     "gh": 196,
     "hucre": 3,
@@ -149,7 +150,7 @@
     "kaynak": [
      [
       "/kartela.css",
-      16963
+      19365
      ],
      [
       "/veri.js",
@@ -157,7 +158,7 @@
      ],
      [
       "/kartela.js",
-      49368
+      54746
      ],
      [
       "/veri.json",
@@ -170,8 +171,9 @@
     "dort": 4,
     "harici": 25,
     "eksikRel": 0,
-    "h1": "Başka İstanbul yok. Kartela: Ataşehir’in gerçek dokusu, plak",
+    "h1": "Başka İstanbul yok. Şehir bir kumaş: Ataşehir’in gerçek plan",
     "kanvas": [
+     "360x624",
      "360x624",
      "360x624",
      "360x624",
@@ -184,7 +186,7 @@
   "ayrik": {
    "genislik": 1440,
    "yukseklik": 900,
-   "ms": 2776,
+   "ms": 3077,
    "konsol_hata": [],
    "sonuc": {
     "hata": null,
@@ -201,7 +203,7 @@
      ],
      [
       "dokuma",
-      "56 ms",
+      "72 ms",
       "o"
      ],
      [
@@ -230,7 +232,7 @@
       "o"
      ]
     ],
-    "ms": 56,
+    "ms": 72,
     "gw": 288,
     "gh": 162,
     "hucre": 4,
@@ -238,7 +240,7 @@
     "kaynak": [
      [
       "/kartela.css",
-      16963
+      19365
      ],
      [
       "/veri.js",
@@ -246,7 +248,7 @@
      ],
      [
       "/kartela.js",
-      49368
+      54746
      ],
      [
       "/veri.json",
@@ -259,8 +261,9 @@
     "dort": 4,
     "harici": 25,
     "eksikRel": 0,
-    "h1": "Başka İstanbul yok. Kartela: Ataşehir’in gerçek dokusu, plak",
+    "h1": "Başka İstanbul yok. Şehir bir kumaş: Ataşehir’in gerçek plan",
     "kanvas": [
+     "1152x696",
      "1152x696",
      "1152x696",
      "1152x696",
@@ -273,16 +276,16 @@
  },
  "dosyalar": {
   "index.html": {
-   "bayt": 8634,
-   "sha256": "92e0b8d14114314cb6eee336adc107ef880b32bf79f6b5bc5928b1c70e25e13f"
+   "bayt": 7205,
+   "sha256": "e1ae033677cfbb96cc3439f232e981609204cb22582820df0ab7186806b20c5d"
   },
   "kartela.css": {
-   "bayt": 16963,
-   "sha256": "8bb98dd9ca22b3eaef8f225b6b1101158179fbb557f63305d8b9f27927ab15a7"
+   "bayt": 19365,
+   "sha256": "9ff819ace485ea7509305b17f23a252c2fdbd7d0e17f834b81c274d32effe489"
   },
   "kartela.js": {
-   "bayt": 49368,
-   "sha256": "ecc88d7a8467a1f80dadc9de39934c6a02cb703b9f1f9836b65969b2e07bd24d"
+   "bayt": 54746,
+   "sha256": "a64d549758047511d7b11770ee1b16acf4feb4917c46280733c3c2e8797faff5"
   },
   "veri.js": {
    "bayt": 42490,

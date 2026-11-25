@@ -242,9 +242,9 @@
     KATLAR.forEach(function (k, idx) {
       var cv = S.kat[k]; cv.width = W; cv.height = H;
       var x = cv.getContext('2d');
-      if (k === 'zemin') zeminCiz(x, L.gw, L.gh, F, c, 7, true, true); else plakaCiz(x, kom.mask[k], L.gw, L.gh, F, c, MUR[k].hex, idx * 101);
+      if (k === 'zemin') zeminCiz(x, L.gw, L.gh, F, c, 7, true, false); else plakaCiz(x, kom.mask[k], L.gw, L.gh, F, c, MUR[k].hex, idx * 101);
     });
-    etiketKur(kom.etiket); kunyeKur();
+    etiketKur(kom.etiket); kunyeKur(); sacakKur();
     S.ms = Math.round(performance.now() - t0);
     olcuYenile();
   }
@@ -301,24 +301,86 @@
       if (!AZALT && S.ayir < 0.05) { tez.style.setProperty('--ty', ((mx - 50) * 0.07).toFixed(2) + 'deg'); tez.style.setProperty('--tx', ((50 - my) * 0.06).toFixed(2) + 'deg'); }
     });
     tez.addEventListener('pointerleave', function () { tez.style.setProperty('--tx', '0deg'); tez.style.setProperty('--ty', '0deg'); });
-    if (!AZALT && 'IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (es) {
-        if (!es[0].isIntersecting || S.dokundu) return;
-        io.disconnect();
-        var t0 = performance.now();
-        (function adim(now) {
-          if (S.dokundu) return;
-          var t = (now - t0) / 4600, v = t < 0.35 ? t / 0.35 : (t < 0.55 ? 1 : Math.max(0, 1 - (t - 0.55) / 0.35)), e = v * v * (3 - 2 * v);
-          setAyir(e);
-          if (t < 0.92) requestAnimationFrame(adim); else setAyir(0);
-        })(t0);
-      }, { threshold: 0.6 });
-      io.observe(tez);
+    // rüzgâr: kaydırıcı gücü belirler, imleç üfler (saçak fiziği sacakDongu'da)
+    if (AZALT) $('#ruzgar').value = 0; // hareket azaltma tercihi: kendiliğinden rüzgâr yok; kullanıcı kaydırırsa üfler
+    SAC.ruzgar = $('#ruzgar').value / 100;
+    $('#ruzgar').addEventListener('input', function (e) { S.dokundu = true; SAC.kullanici = true; SAC.ruzgar = e.target.value / 100; });
+    tez.addEventListener('pointermove', function (e) {
+      if (S.ayir > 0.05) return;
+      var r = $('#sahne').getBoundingClientRect(), k = (S.gw * S.c) / r.width, nx = (e.clientX - r.left) * k, ny = (e.clientY - r.top) * k, dt = Math.max(0.008, (e.timeStamp - SAC.pt) / 1000);
+      if (SAC.pt) SAC.pvx = Math.max(-2500, Math.min(2500, (nx - SAC.px) / dt));
+      SAC.px = nx; SAC.py = ny; SAC.pt = e.timeStamp;
+    });
+    tez.addEventListener('pointerleave', function () { SAC.px = SAC.py = -1e9; SAC.pt = 0; });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { SAC.gorunur = es[0].isIntersecting; }, { threshold: 0 }).observe(tez);
+  }
+  function giris() { // açılış: plakalar ayrık başlar, birleşir (gerçek geçiş; kullanıcı dokunursa durur)
+    var t0 = performance.now() + 350;
+    setAyir(1);
+    (function ad(now) {
+      if (S.dokundu) return;
+      var t = (now - t0) / 1700, e;
+      if (t < 0) { requestAnimationFrame(ad); return; }
+      e = t >= 1 ? 0 : 1 - t * t * (3 - 2 * t);
+      setAyir(e);
+      if (t < 1) requestAnimationFrame(ad);
+    })(t0);
+  }
+
+  /* ------------------------------------------------------------ saçak: rüzgârda sönümlü, sürülen salınıcı (gerçek fizik) */
+  var SAC = { n: 0, th: null, om: null, len: null, col: null, ruzgar: 0.22, px: -1e9, py: -1e9, pvx: 0, pt: 0, son: 0, calisiyor: false, gorunur: true, t: 0 };
+  function sacakKur() {
+    var cv = S.kat.sacak, c = S.c, gw = S.gw, gh = S.gh, i, yan, ci;
+    cv.width = gw * c; cv.height = (gh + 2 * F) * c;
+    SAC.n = gw * 2; SAC.th = new Float32Array(SAC.n); SAC.om = new Float32Array(SAC.n); SAC.len = new Float32Array(SAC.n); SAC.bias = new Float32Array(SAC.n); SAC.col = [];
+    for (i = 0; i < SAC.n; i++) {
+      yan = i >= gw ? 1 : 0; ci = i % gw;
+      SAC.bias[i] = SAC.th[i] = (hash(ci * 29 + yan * 313 + 11) - 0.5) * 0.22; // saçağın dinlenme eğimi: tarak gibi düz durmaz
+      SAC.len[i] = F * c * (0.55 + 0.45 * hash(ci * 13 + yan * 977 + 7));
+      SAC.col.push(rgb(shade(RENK.zemin, (hash(ci * 7 + yan) - 0.5) * 0.14)));
     }
+    sacakCiz();
+    if (!SAC.calisiyor) { SAC.calisiyor = true; SAC.son = performance.now(); requestAnimationFrame(sacakDongu); }
+  }
+  function sacakCiz() {
+    var cv = S.kat.sacak, x = cv.getContext('2d'), c = S.c, gw = S.gw, gh = S.gh, W = gw * c, i, yan, ci, x0, y0, dr, th, ln, cx, cy;
+    x.clearRect(0, 0, W, F * c); x.clearRect(0, (F + gh) * c, W, F * c);
+    x.lineCap = 'round';
+    for (i = 0; i < SAC.n; i++) {
+      yan = i >= gw ? 1 : 0; ci = i % gw; x0 = ci * c + c * 0.5; y0 = yan ? (F + gh) * c : F * c; dr = yan ? 1 : -1; th = SAC.th[i]; ln = SAC.len[i];
+      cx = x0 + Math.sin(th * 0.45) * ln * 0.55; cy = y0 + dr * Math.cos(th * 0.45) * ln * 0.55;
+      x.beginPath(); x.moveTo(x0, y0 - dr * c * 0.5); x.quadraticCurveTo(cx, cy, x0 + Math.sin(th) * ln, y0 + dr * Math.cos(th) * ln);
+      x.strokeStyle = SAC.col[i]; x.lineWidth = c * 0.78; x.stroke();
+      x.strokeStyle = 'rgba(255,255,255,0.1)'; x.lineWidth = c * 0.18; x.stroke();
+    }
+  }
+  function sacakDongu(now) {
+    requestAnimationFrame(sacakDongu);
+    var dt = Math.min(0.05, Math.max(0.001, (now - SAC.son) / 1000));
+    SAC.son = now;
+    if (!SAC.gorunur || D.hidden || !S.gw) return;
+    sacakFizik(dt);
+  }
+  function sacakFizik(dt) { // tek adım: ölçüm ve test için doğrudan çağrılabilir
+    SAC.t += dt;
+    var gw = S.gw, c = S.c, W = (AZALT && !SAC.kullanici) ? 0 : SAC.ruzgar, R = c * 6, i, ci, yan, faz, ruz, a, dx, dy, d, x0, y0, tx, ty;
+    for (i = 0; i < SAC.n; i++) {
+      ci = i % gw; yan = i >= gw ? 1 : 0; faz = ci * 0.11 + yan * 1.7;
+      ruz = W * (0.55 + 0.45 * Math.sin(SAC.t * 1.3 + faz) + 0.3 * Math.sin(SAC.t * 2.9 + faz * 2.1)) * 14; // rüzgâr ivmesi (rad/s²)
+      a = -22 * (SAC.th[i] - SAC.bias[i]) - 3.4 * SAC.om[i] + ruz; // yay (k=22) + sönüm (c=3,4) + sürücü
+      x0 = ci * c + c * 0.5; y0 = yan ? (S.gh + F) * c : F * c;
+      tx = x0 + Math.sin(SAC.th[i]) * SAC.len[i]; ty = y0 + (yan ? 1 : -1) * Math.cos(SAC.th[i]) * SAC.len[i];
+      dx = tx - SAC.px; dy = ty - SAC.py; d = Math.sqrt(dx * dx + dy * dy);
+      if (d < R) a += SAC.pvx * 0.006 * (1 - d / R); // imleç üfler: hız ile orantılı
+      SAC.om[i] += a * dt; SAC.th[i] += SAC.om[i] * dt;
+      if (SAC.th[i] > 1.1) { SAC.th[i] = 1.1; SAC.om[i] *= -0.3; } else if (SAC.th[i] < -1.1) { SAC.th[i] = -1.1; SAC.om[i] *= -0.3; }
+    }
+    SAC.pvx *= 0.9;
+    sacakCiz();
   }
 
   /* ------------------------------------------------------------ üç çatı: iplik şeması (SVG) */
-  var UCUS = { secili: 'A', iglar: [], yollar: {} };
+  var UCUS = { secili: 'A', iglar: [], yollar: {}, halkalar: {} };
   function ucusKur() {
     var svg = $('#ucus-svg'), W = 1200, YG = 468, SOL = 1.55, TW = 54, i;
     var tx = { A: 150, B: 300, C: 450 }, sira = V.hedefler.slice().sort(function (a, b) { return Math.cos(b.yon_onda / 10 * Math.PI / 180) - Math.cos(a.yon_onda / 10 * Math.PI / 180); });
@@ -357,15 +419,16 @@
       svg.appendChild(yol); svg.appendChild(g);
       UCUS.yollar[b.kod] = yol;
       var L = yol.getTotalLength();
+      UCUS.halkalar[b.kod] = [];
       [0.3, 0.52, 0.74].forEach(function (t) {
         var p = yol.getPointAtLength(L * t), p2 = yol.getPointAtLength(L * t + 2), ang = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI;
         var halka = sv('ellipse', { cx: p.x, cy: p.y, rx: 8, ry: 28, fill: 'none', stroke: MUR.hedef.hex, 'stroke-width': 3.8, transform: 'rotate(' + (ang + 90) + ' ' + p.x + ' ' + p.y + ')', class: 'g-hikaye halka', 'data-blok': b.kod });
-        svg.appendChild(halka);
+        svg.appendChild(halka); UCUS.halkalar[b.kod].push(halka);
       });
       var ig = sv('g', { class: 'ig g-hikaye', 'data-blok': b.kod }), govde = sv('path', { d: 'M-18 0 L12 -2.6 L18 0 L12 2.6 Z', fill: MUR.yazi.hex, stroke: '#0A1226', 'stroke-width': 0.8 });
       ig.appendChild(govde); ig.appendChild(sv('ellipse', { cx: -12, cy: 0, rx: 2.6, ry: 1, fill: '#0A1226' })); svg.appendChild(ig);
       UCUS.iglar.push({ blok: b.kod, g: ig, yol: yol, L: L });
-      var sec = function () { ucusSec(b.kod); };
+      var sec = function () { ucusSec(b.kod); ucusUc(b.kod); };
       g.addEventListener('click', sec); g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sec(); } });
       // ölçü kipi: ölçülen mesafe etiketi
       var mp = yol.getPointAtLength(L * 0.5), et = sv('text', { x: mp.x, y: mp.y - 14, 'text-anchor': 'middle', fill: MUR.yapi.hex, 'font-size': 18, 'font-family': 'ui-monospace,Consolas,monospace', class: 'g-olcu' });
@@ -374,15 +437,37 @@
     // dokuma zemin deseni (küçük döşeme)
     var kv = D.createElement('canvas'), kx; kv.width = 96; kv.height = 96; kx = kv.getContext('2d'); zeminCiz(kx, 24, 24, 0, 4, 3, false, false);
     $('.ucus-sahne').style.setProperty('--dokuma', 'url(' + kv.toDataURL('image/png') + ')');
-    ucusSec('A'); olcuSeridi();
-    if (!AZALT) { var t0 = performance.now(); (function dongu(now) { ucusIgne((now - t0) / 1000); requestAnimationFrame(dongu); })(t0); } else ucusIgne(2.2);
+    ucusSec('A'); olcuSeridi(); ucusBasla();
   }
-  function ucusIgne(sn) {
-    if (D.body.getAttribute('data-kip') !== 'hikaye') return;
-    UCUS.iglar.forEach(function (n, i) {
-      var t = ((sn / 7.5 + i * 0.31) % 1), e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2, p = n.yol.getPointAtLength(n.L * e), p2 = n.yol.getPointAtLength(Math.min(n.L, n.L * e + 3));
-      n.g.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ') rotate(' + (Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI).toFixed(1) + ') scale(2)');
-    });
+  function ucusYerles(n, e, bob) {
+    var p = n.yol.getPointAtLength(n.L * e), p2 = n.yol.getPointAtLength(Math.min(n.L, n.L * e + 3)), a = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI;
+    n.g.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + (p.y + (bob || 0)).toFixed(1) + ') rotate(' + a.toFixed(1) + ') scale(2)');
+  }
+  function ucusUc(kod) { // kullanıcı yönlendirir: seçilen çatıdan iğne bir kez uçar, halkalar parlar
+    var n = UCUS.iglar.filter(function (x) { return x.blok === kod; })[0];
+    if (!n) return;
+    n.t0 = performance.now(); n.ucuyor = true; n.e = 0; n.bekle = 0; // kullanıcı başlattı: hareket azaltma açıkken de uçar
+  }
+  function ucusBasla() {
+    UCUS.iglar.forEach(function (n) { n.e = 0; n.ucuyor = false; n.bekle = 0; ucusYerles(n, 0, 0); });
+    (function dongu(now) {
+      requestAnimationFrame(dongu);
+      if (D.body.getAttribute('data-kip') !== 'hikaye') return;
+      UCUS.iglar.forEach(function (n, i) {
+        if (n.ucuyor) {
+          var t = (now - n.t0) / 3600, e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+          if (t >= 1) { n.ucuyor = false; n.bekle = now + 1500; ucusYerles(n, 1, 0); return; }
+          ucusYerles(n, e, 0);
+          [0.3, 0.52, 0.74].forEach(function (th, k) { if (n.e < th && e >= th) { var h = UCUS.halkalar[n.blok][k]; h.classList.add('gecti'); setTimeout(function () { h.classList.remove('gecti'); }, 750); } });
+          n.e = e;
+        } else if (n.bekle) { if (now > n.bekle) { n.bekle = 0; n.e = 0; ucusYerles(n, 0, 0); } }
+        else ucusYerles(n, 0, AZALT ? 0 : Math.sin(now / 520 + i * 2) * 2.2);
+      });
+    })(performance.now());
+    if (!AZALT && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); setTimeout(function () { ucusUc(UCUS.secili); }, 500); } }, { threshold: 0.5 });
+      io.observe($('.ucus-sahne'));
+    }
   }
   function ucusSec(kod) {
     UCUS.secili = kod;
@@ -390,10 +475,12 @@
     var b = BLOK[kod], h = HEDEF[b.hedef], kart = $('#ucus-kart'), suz = b.yukseklik_m * +V.surec.suzulme_orani;
     kart.textContent = '';
     kart.appendChild(el('div', 'kod', kod)); kart.appendChild(el('h3', null, b.ad));
-    var dl = el('dl'), satir = [['Yükseklik', b.yukseklik_m + ' m (OSM etiketi)'], ['Taban', b.alan_m2.toLocaleString('tr-TR') + ' m²'], ['Hedef', h.ad], ['Mesafe', km(h.mesafe_m) + ' kuş uçuşu'], ['Yön', tr(h.yon_onda / 10, 1) + '° ' + h.yon_ad], ['Süzülme', '≈ ' + Math.round(suz) + ' m (varsayım 2,5:1)'], ['Hedef/menzil', tr(h.mesafe_m / suz, 1) + ' kat']];
-    satir.forEach(function (s) { dl.appendChild(el('dt', null, s[0])); dl.appendChild(el('dd', null, s[1])); }); kart.appendChild(dl);
-    var a = el('a', 'dugme', 'OSM nesnesi ↗'); a.href = 'https://www.openstreetmap.org/' + b.osm; a.target = '_blank'; a.rel = 'noopener noreferrer'; kart.appendChild(a);
-    if (h.resmi_url) { var a2 = el('a', 'dugme', 'Resmî sayfa ↗'); a2.href = h.resmi_url; a2.target = '_blank'; a2.rel = 'noopener noreferrer'; a2.style.marginLeft = '8px'; kart.appendChild(a2); }
+    var dl = el('dl'), satir = [['Hedef', h.ad, 0], ['Mesafe', km(h.mesafe_m), 0], ['Yön', tr(h.yon_onda / 10, 1) + '° ' + h.yon_ad, 0], ['Yükseklik', b.yukseklik_m + ' m (OSM)', 1], ['Taban', b.alan_m2.toLocaleString('tr-TR') + ' m²', 1], ['Süzülme', '≈ ' + Math.round(suz) + ' m (varsayım 2,5:1)', 1], ['Hedef/menzil', tr(h.mesafe_m / suz, 1) + ' kat', 1]];
+    satir.forEach(function (s) { dl.appendChild(el('dt', s[2] ? 'g-olcu' : null, s[0])); dl.appendChild(el('dd', s[2] ? 'g-olcu' : null, s[1])); }); kart.appendChild(dl);
+    var eylem = el('div', 'eylem'), uc = el('button', 'dugme dolu g-hikaye', 'Uç ↗'); uc.type = 'button'; uc.addEventListener('click', function () { ucusUc(kod); }); eylem.appendChild(uc);
+    var a = el('a', 'dugme g-olcu', 'OSM nesnesi ↗'); a.href = 'https://www.openstreetmap.org/' + b.osm; a.target = '_blank'; a.rel = 'noopener noreferrer'; eylem.appendChild(a);
+    if (h.resmi_url) { var a2 = el('a', 'dugme', 'Resmî sayfa ↗'); a2.href = h.resmi_url; a2.target = '_blank'; a2.rel = 'noopener noreferrer'; eylem.appendChild(a2); }
+    kart.appendChild(eylem);
     var sc = el('div', 'secim'); V.bloklar.forEach(function (x) { var bt = el('button', null, x.kod); bt.type = 'button'; bt.setAttribute('aria-pressed', x.kod === kod ? 'true' : 'false'); bt.addEventListener('click', function () { ucusSec(x.kod); }); sc.appendChild(bt); });
     kart.appendChild(sc);
   }
@@ -436,11 +523,11 @@
   function ihtiyacKur() {
     var SI = V.siteler, ul = $('#ihtiyac');
     var liste = [
-      { renk: 'rota', ikon: 'igne', soru: 'Online terzi müsait mi?', cevap: 'Bilinmiyor: terzi takvimi bu sayfadan okunamıyor ve başka hiçbir yerde de bağlı değil. Yapabileceğin tek şey, talebini hazırlamak.', ol: 'yasam-terzi', alinti: 'musaitlik', e: [['Terzi talebi hazırla', 'yasam-terzi', 1]] },
-      { renk: 'hedef', ikon: 'yaprak', soru: 'Tarım danışmanından nasıl randevu alırım?', cevap: 'Önce talebini hazırla; saati sağlayıcı onaylar. Toprağı tanımak istersen parsel ölçeğinde iklim ve sulama hesabı ayrı bir sitede.', ol: 'yasam-tarim', alinti: 'musaitlik', e: [['Randevu talebi hazırla', 'yasam-tarim', 1], ['Parsel verisi', 'tarim-online', 0]] },
-      { renk: 'yapi', ikon: 'yonga', soru: 'Evdeki teknoloji için kime yazarım?', cevap: 'Cihaz ve dijital yaşam için destek isteği taslağı hazırlarsın; görüşme saati yine sağlayıcıdan gelir.', ol: 'yasam-teknoloji', alinti: 'musaitlik', e: [['Destek isteği hazırla', 'yasam-teknoloji', 1]] },
-      { renk: 'cevre', ikon: 'makara', soru: 'Kumaşa ve ipliğe nereden bakarım?', cevap: 'Lif Atölyesi, iki malzeme fikrini aynı ışık denemesine koyar. Ekrandaki renk bir tasarım önizlemesidir; Pantone eşleşmesi ancak fiziksel numune ölçülürse yazılır.', ol: 'lif-atolyesi', aciklama: 1, e: [['Lif Atölyesi', 'lif-atolyesi', 1]] },
-      { renk: 'yazi', ikon: 'cerceve', soru: 'Sanatla ve defileyle nasıl tanışırım?', cevap: 'AFAIR LIVE defile ve koleksiyon için yayın alanıdır. Sanat görüşmesi için Yaşam Masası’nda ayrıca talep taslağı hazırlanır.', ol: 'afair-live', aciklama: 1, e: [['AFAIR LIVE', 'afair-live', 1], ['Sanat talebi', 'yasam-sanat', 0]] }
+      { renk: 'rota', ikon: 'igne', soru: 'Terzi müsait mi?', cevap: 'Bilinmiyor. Talebini hazırla.', ol: 'yasam-terzi', alinti: 'musaitlik', e: [['Terzi talebi', 'yasam-terzi', 1]] },
+      { renk: 'hedef', ikon: 'yaprak', soru: 'Tarım danışmanı?', cevap: 'Randevu için talep hazırla. Toprak verisi ayrı sitede.', ol: 'yasam-tarim', alinti: 'musaitlik', e: [['Randevu talebi', 'yasam-tarim', 1], ['Parsel verisi', 'tarim-online', 0]] },
+      { renk: 'yapi', ikon: 'yonga', soru: 'Evdeki teknoloji?', cevap: 'Destek isteği hazırla.', ol: 'yasam-teknoloji', alinti: 'musaitlik', e: [['Destek isteği', 'yasam-teknoloji', 1]] },
+      { renk: 'cevre', ikon: 'makara', soru: 'Kumaş ve iplik?', cevap: 'Renk ekranda, karar kumaşta.', ol: 'lif-atolyesi', aciklama: 1, e: [['Lif Atölyesi', 'lif-atolyesi', 1]] },
+      { renk: 'yazi', ikon: 'cerceve', soru: 'Sanat ve defile?', cevap: 'Defile ve koleksiyon yayında.', ol: 'afair-live', aciklama: 1, e: [['AFAIR LIVE', 'afair-live', 1], ['Sanat talebi', 'yasam-sanat', 0]] }
     ];
     liste.forEach(function (k) {
       var li = el('li', 'kart'), cv = el('canvas'), g = el('div', 'govde'), o = SI[k.ol];
@@ -448,8 +535,10 @@
       cv.setAttribute('aria-hidden', 'true'); li.appendChild(cv); li.appendChild(g);
       g.appendChild(el('h3', null, k.soru)); g.appendChild(el('p', null, k.cevap));
       var q = k.alinti ? (o && o.alinti && o.alinti[k.alinti]) : (k.aciklama && o && o.aciklama);
-      if (q) g.appendChild(el('p', 'alinti', '“' + q + '” — kaynak sayfanın kendi cümlesi'));
-      if (o) g.appendChild(el('p', 'olc', 'Ölçüm: ' + olcBilgi(o)));
+      var det = el('details', 'kaynak-d kip-acik'); det.appendChild(el('summary', null, 'Kaynak'));
+      if (q) det.appendChild(el('p', 'alinti', '“' + q + '” — kaynak sayfanın kendi cümlesi'));
+      if (o) det.appendChild(el('p', 'olc', 'Ölçüm: ' + olcBilgi(o)));
+      g.appendChild(det);
       var eylem = el('div', 'eylem'); k.e.forEach(function (e) { if (SI[e[1]]) eylem.appendChild(dugmeLink(e[0], SI[e[1]].url, e[2])); }); g.appendChild(eylem);
       ul.appendChild(li); k.cv = cv;
     });
@@ -461,21 +550,22 @@
   function dortKur() {
     var SI = V.siteler, ol = $('#dort');
     var liste = [
-      { ad: 'Kent', baslik: 'Ataşehir · Üç Yön', alan: 'ataşehirmodern.com/uc-yon', ol: 'atasehirmodern-yon', renk: 'yapi', not: 'Üç blok, üç yön: Watergarden, İstanbul Finans Merkezi, Maltepe kıyısı.' },
-      { ad: 'Bina', baslik: 'Modern Ataşehir · Evin Şehirle Tanışsın', alan: 'modernataşehir.com', ol: 'modernatasehir', renk: 'cevre', not: 'Yeni taşınan misafir için bina ve karşılama.' },
-      { ad: 'Kumaş & sanat', baslik: 'Lif Atölyesi · AFAIR Studio', alan: 'afair.studio/lif-atolyesi', ol: 'lif-atolyesi', renk: 'rota', not: 'Liften dokumaya, numuneden provaya.' },
-      { ad: 'Yaşam masası', baslik: 'AFAIR · Yaşam Masası', alan: 'afair.live/yasam-destegi', ol: 'yasam-terzi', renk: 'hedef', not: 'Terzi, toprak, sanat, teknoloji: talep taslağı.', url: 'https://www.afair.live/yasam-destegi/' }
+      { ad: 'Kent', baslik: 'Ataşehir', alan: 'ataşehirmodern.com', ol: 'atasehirmodern-yon', renk: 'yapi', not: 'Üç blok, üç yön.' },
+      { ad: 'Bina', baslik: 'Modern Ataşehir', alan: 'modernataşehir.com', ol: 'modernatasehir', renk: 'cevre', not: 'Yeni taşınana karşılama.' },
+      { ad: 'Kumaş', baslik: 'Lif Atölyesi', alan: 'afair.studio', ol: 'lif-atolyesi', renk: 'rota', not: 'Lif, dokuma, prova.' },
+      { ad: 'Masa', baslik: 'Yaşam Masası', alan: 'afair.live', ol: 'yasam-terzi', renk: 'hedef', not: 'Talep taslağı hazırla.', url: 'https://www.afair.live/yasam-destegi/' }
     ];
     liste.forEach(function (k) {
       var o = SI[k.ol], li = el('li'), iyi = o && o.durum === 200;
       li.style.setProperty('--c', MUR[k.renk].hex);
       li.appendChild(el('p', 'alan', k.ad)); li.appendChild(el('h3', null, k.baslik)); li.appendChild(el('p', null, k.not));
-      li.appendChild(el('p', 'olc ' + (iyi ? 'tamam' : 'sorun'), (iyi ? '✓ ' : '✗ ') + (o ? olcBilgi(o) : 'ölçülmedi')));
-      if (o && o.baslik) li.appendChild(el('p', 'olc', 'Sayfa başlığı: ' + o.baslik));
+      li.appendChild(el('p', 'olc ' + (iyi ? 'tamam' : 'sorun'), iyi ? '✓ canlı · ' + o.ms + ' ms' : '✗ ölçülemedi'));
+      var det = el('details', 'kaynak-d kip-acik'); det.appendChild(el('summary', null, 'Ölçüm'));
+      det.appendChild(el('p', 'olc', o ? olcBilgi(o) : 'ölçülmedi')); if (o && o.baslik) det.appendChild(el('p', 'olc', 'Sayfa başlığı: ' + o.baslik)); li.appendChild(det);
       var e = el('div', 'eylem'); e.appendChild(dugmeLink(k.alan, k.url || (o ? o.url : '#'), 1)); li.appendChild(e); ol.appendChild(li);
     });
     var t = SI['tarim-online'], h = SI['hasat-online'], u = SI['ust-halka-kardes'];
-    $('#dort-dipnot').textContent = 'Tarım verisi: Tarım Online (' + (t ? 'HTTP ' + t.durum : 'ölçülmedi') + ') ve hasat.online (' + (h ? 'HTTP ' + h.durum : 'ölçülmedi') + '). Kardeş halka: Ataşehir’in “Yaşam Halkası” sayfası (' + (u ? 'HTTP ' + u.durum : 'ölçülmedi') + ') aynı fikri kendi biçiminde anlatır. Ölçüm yöntemi: ' + V.siteler_yontem;
+    $('#dort-dipnot').textContent = 'Tarım verisi: Tarım Online (' + (t ? 'HTTP ' + t.durum : 'ölçülmedi') + ') · hasat.online (' + (h ? 'HTTP ' + h.durum : 'ölçülmedi') + '). Kardeş halka: Yaşam Halkası (' + (u ? 'HTTP ' + u.durum : 'ölçülmedi') + ').';
   }
 
   /* ------------------------------------------------------------ ölçü ve kanıt paneli */
@@ -540,14 +630,14 @@
       b.addEventListener('click', function () {
         D.body.setAttribute('data-kip', b.getAttribute('data-kip'));
         $$('.kip button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-        if (b.getAttribute('data-kip') === 'hikaye' && AZALT) ucusIgne(2.2);
+        if (b.getAttribute('data-kip') === 'olcu') $$('details.kip-acik').forEach(function (d) { d.open = true; });
       });
     });
   }
   function ac() {
     $$('[data-v="cevre-adet"]').forEach(function (e) { e.textContent = V.cevre.bina_adedi; });
     $$('[data-v="metre-hucre"]').forEach(function (e) { e.textContent = MS; });
-    KATLAR.forEach(function (k) { S.kat[k] = $('.kat[data-k="' + k + '"]'); });
+    KATLAR.concat(['sacak']).forEach(function (k) { S.kat[k] = $('.kat[data-k="' + k + '"]'); });
     plakaDugmeleri(); tezgahEtkilesim(); kipKur();
     V.murekkep.forEach(function (m) { var e = el('div', 'etk', m.kod + ' · ' + m.ad + ' · ' + m.rol); e.setAttribute('data-k', m.anahtar); e.style.setProperty('--c', m.hex); $('#sahne').appendChild(e); });
     var q = new URLSearchParams(location.search);
@@ -556,7 +646,8 @@
     sahneKur(true);
     ihtiyacKur(); dortKur(); ucusKur(); deTablo(); kaynakListe(); olcuYenile(); butunluk();
     var bek; if ('ResizeObserver' in window) new ResizeObserver(function () { clearTimeout(bek); bek = setTimeout(function () { sahneKur(false); }, 260); }).observe($('#tezgah'));
-    window.__KARTELA = { durum: S, olc: OLC, ayir: setAyir, kipler: function () { return D.body.getAttribute('data-kip'); } };
+    if (!AZALT && !q.has('ayir') && !q.has('sabit')) giris();
+    window.__KARTELA = { durum: S, olc: OLC, ayir: setAyir, sac: SAC, fizik: sacakFizik, uc: ucusUc, kipler: function () { return D.body.getAttribute('data-kip'); } };
   }
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', ac); else ac();
 })();

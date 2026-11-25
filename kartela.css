@@ -169,6 +169,38 @@ body[data-kip="olcu"] #ucus-svg .ip{animation:none;stroke-dasharray:3 7}
 #ucus-svg g[data-blok]:focus-visible rect{stroke:#fff;stroke-width:3}
 #ucus-svg .halka{pointer-events:none}
 
+/* ---------- sade sürüm (Dila 8 madde): az metin, tek eylem, gerçek ve yönetilebilir hareket */
+.kat[data-k="sacak"]{--z:0;filter:none;outline:none}
+h2{font-size:clamp(38px,6.2vw,86px);line-height:1}
+.kapak-alt{display:block;margin-top:clamp(20px,3vw,38px)}
+.kapak-alt .giris{margin:0 0 20px;max-width:none;font:500 clamp(28px,4vw,56px)/1.08 var(--serif);letter-spacing:-.01em}
+.kapak-alt .giris b{font-weight:600;color:var(--rota)}
+.kapak-alt .kontrol{display:flex;flex-wrap:wrap;align-items:center;gap:14px 44px}
+.kayd{display:flex;flex-direction:column;gap:2px}
+.kayd .ayir{justify-content:flex-start;gap:14px}
+.kayd .ayir span{min-width:84px}
+.kayd input[type=range]{width:min(300px,56vw)}
+.kapak-alt .plakalar{margin:0}
+.kunye-d{grid-column:1/-1;border-top:1px solid var(--cizgi);padding-top:6px}
+.kunye-d dl{display:grid;grid-template-columns:auto 1fr;gap:5px 16px;font:12.5px var(--mono);margin:8px 0 4px;max-width:520px}
+.kunye-d dt{color:var(--soluk)}.kunye-d dd{margin:0;font-weight:600}
+summary{cursor:pointer;list-style:none;font:700 11.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--soluk);padding:6px 0}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+ "}
+details[open]>summary::before{content:"− "}
+.kaynak-d{margin-top:2px}
+.kaynak-d summary{font-size:11px}
+.kaynak-d .alinti,.kaynak-d .olc{margin-top:6px}
+.olcu-d>summary{display:inline-block;border:1px solid var(--murekkep);border-radius:999px;padding:10px 20px;background:var(--kagit);color:var(--murekkep);font:700 12px var(--mono);letter-spacing:.1em}
+.olcu-d>summary::before{content:"";margin:0}
+.olcu-d[open]>summary{background:var(--murekkep);color:var(--yazi)}
+.olcu-d>*:not(summary){margin-top:20px}
+.ucus-kart .eylem{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.ucus-kart .eylem .dugme{margin:0}
+@keyframes halkaParla{0%{stroke-width:3.8}45%{stroke-width:9;stroke:#F0B429}100%{stroke-width:3.8}}
+#ucus-svg .halka.gecti{animation:halkaParla .75s ease-out}
+.kart h3{font-size:21px}
+
 /* ---------- dar ekran */
 @media (max-width:900px){
   .ucus{grid-template-columns:1fr}
@@ -177,6 +209,10 @@ body[data-kip="olcu"] #ucus-svg .ip{animation:none;stroke-dasharray:3 7}
   .olcu-satir{grid-template-columns:1fr}
 }
 @media (max-width:720px){
+  .kapak-alt{grid-template-columns:1fr}.kapak-alt .kontrol{grid-column:1}
+  .kapak-alt .kontrol{position:sticky;bottom:10px;z-index:6;background:rgba(238,231,214,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--murekkep);border-radius:12px;padding:10px 14px}
+  .kayd input[type=range]{width:min(220px,50vw)}
+  .plaka small{display:none}
   .ucus-sahne{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .ucus-sahne svg{min-width:820px}
   .ucus-sahne .ipucu{position:sticky;left:0;max-width:100vw}
