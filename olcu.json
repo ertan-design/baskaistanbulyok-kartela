@@ -1,12 +1,12 @@
 {
  "sema": "biy.kartela.dogrulama.v1",
- "zaman_utc": "2026-11-25T01:46:27Z",
+ "zaman_utc": "2026-11-25T02:55:00Z",
  "tarayici": "chromium-1248",
  "kosular": {
   "masaustu": {
    "genislik": 1440,
    "yukseklik": 900,
-   "ms": 3154,
+   "ms": 3452,
    "konsol_hata": [],
    "sonuc": {
     "hata": null,
@@ -23,7 +23,7 @@
      ],
      [
       "dokuma",
-      "78 ms",
+      "88 ms",
       "o"
      ],
      [
@@ -52,7 +52,7 @@
       "o"
      ]
     ],
-    "ms": 78,
+    "ms": 88,
     "gw": 288,
     "gh": 162,
     "hucre": 4,
@@ -60,7 +60,7 @@
     "kaynak": [
      [
       "/kartela.css",
-      19365
+      19767
      ],
      [
       "/veri.js",
@@ -68,7 +68,7 @@
      ],
      [
       "/kartela.js",
-      54746
+      55235
      ],
      [
       "/veri.json",
@@ -96,7 +96,7 @@
   "mobil": {
    "genislik": 390,
    "yukseklik": 844,
-   "ms": 2767,
+   "ms": 2712,
    "konsol_hata": [],
    "sonuc": {
     "hata": null,
@@ -113,7 +113,7 @@
      ],
      [
       "dokuma",
-      "78 ms",
+      "61 ms",
       "o"
      ],
      [
@@ -142,7 +142,7 @@
       "o"
      ]
     ],
-    "ms": 78,
+    "ms": 61,
     "gw": 120,
     "gh": 196,
     "hucre": 3,
@@ -150,7 +150,7 @@
     "kaynak": [
      [
       "/kartela.css",
-      19365
+      19767
      ],
      [
       "/veri.js",
@@ -158,7 +158,7 @@
      ],
      [
       "/kartela.js",
-      54746
+      55235
      ],
      [
       "/veri.json",
@@ -186,7 +186,7 @@
   "ayrik": {
    "genislik": 1440,
    "yukseklik": 900,
-   "ms": 3077,
+   "ms": 2977,
    "konsol_hata": [],
    "sonuc": {
     "hata": null,
@@ -203,7 +203,7 @@
      ],
      [
       "dokuma",
-      "72 ms",
+      "122 ms",
       "o"
      ],
      [
@@ -232,7 +232,7 @@
       "o"
      ]
     ],
-    "ms": 72,
+    "ms": 122,
     "gw": 288,
     "gh": 162,
     "hucre": 4,
@@ -240,7 +240,7 @@
     "kaynak": [
      [
       "/kartela.css",
-      19365
+      19767
      ],
      [
       "/veri.js",
@@ -248,7 +248,7 @@
      ],
      [
       "/kartela.js",
-      54746
+      55235
      ],
      [
       "/veri.json",
@@ -276,16 +276,16 @@
  },
  "dosyalar": {
   "index.html": {
-   "bayt": 7205,
-   "sha256": "e1ae033677cfbb96cc3439f232e981609204cb22582820df0ab7186806b20c5d"
+   "bayt": 7394,
+   "sha256": "745381dc4d2098bd6b5fa04982bde3595f094626c0f5a2b278ee878777905908"
   },
   "kartela.css": {
-   "bayt": 19365,
-   "sha256": "9ff819ace485ea7509305b17f23a252c2fdbd7d0e17f834b81c274d32effe489"
+   "bayt": 19767,
+   "sha256": "0fb7cdabed1e0ce5b0361c2b179f9315c605fb1487ca241347a6e8ff00cb1ede"
   },
   "kartela.js": {
-   "bayt": 54746,
-   "sha256": "a64d549758047511d7b11770ee1b16acf4feb4917c46280733c3c2e8797faff5"
+   "bayt": 55235,
+   "sha256": "5a9027126284292113ed637a612786a3d80a24300e1f975e035a8d693b5c4ed7"
   },
   "veri.js": {
    "bayt": 42490,

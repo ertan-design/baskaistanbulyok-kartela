@@ -314,6 +314,15 @@
     tez.addEventListener('pointerleave', function () { SAC.px = SAC.py = -1e9; SAC.pt = 0; });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { SAC.gorunur = es[0].isIntersecting; }, { threshold: 0 }).observe(tez);
   }
+  function hareketKur() { // hareket azaltma tercihi açıksa: kendiliğinden oynama yok, ama görünür tek dokunuşla "Hareketi aç"
+    if (!AZALT) return;
+    var not = $('#hareket-not'); not.hidden = false;
+    $('#hareket-ac').addEventListener('click', function () {
+      AZALT = false; S.dokundu = true; SAC.kullanici = true; SAC.ruzgar = 0.35; $('#ruzgar').value = 35;
+      D.body.classList.add('hareket'); not.hidden = true;
+      ucusUc(UCUS.secili);
+    });
+  }
   function giris() { // açılış: plakalar ayrık başlar, birleşir (gerçek geçiş; kullanıcı dokunursa durur)
     var t0 = performance.now() + 350;
     setAyir(1);
@@ -638,7 +647,7 @@
     $$('[data-v="cevre-adet"]').forEach(function (e) { e.textContent = V.cevre.bina_adedi; });
     $$('[data-v="metre-hucre"]').forEach(function (e) { e.textContent = MS; });
     KATLAR.concat(['sacak']).forEach(function (k) { S.kat[k] = $('.kat[data-k="' + k + '"]'); });
-    plakaDugmeleri(); tezgahEtkilesim(); kipKur();
+    plakaDugmeleri(); tezgahEtkilesim(); kipKur(); hareketKur();
     V.murekkep.forEach(function (m) { var e = el('div', 'etk', m.kod + ' · ' + m.ad + ' · ' + m.rol); e.setAttribute('data-k', m.anahtar); e.style.setProperty('--c', m.hex); $('#sahne').appendChild(e); });
     var q = new URLSearchParams(location.search);
     if (q.has('ayir')) { S.dokundu = true; setAyir(Math.max(0, Math.min(1, +q.get('ayir') / 100))); }

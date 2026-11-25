@@ -200,6 +200,11 @@ details[open]>summary::before{content:"− "}
 @keyframes halkaParla{0%{stroke-width:3.8}45%{stroke-width:9;stroke:#F0B429}100%{stroke-width:3.8}}
 #ucus-svg .halka.gecti{animation:halkaParla .75s ease-out}
 .kart h3{font-size:21px}
+.hareket-not{margin:0 0 14px;padding:10px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:var(--kagit2);border-left:4px solid var(--yapi);font:600 13px/1.4 var(--mono)}
+.hareket-not[hidden]{display:none}
+.hareket-not .dugme{padding:7px 14px}
+body.hareket .isik::after{animation:supurge 9s ease-in-out infinite}
+body.hareket #ucus-svg .ip{animation:dik 1.6s linear infinite}
 
 /* ---------- dar ekran */
 @media (max-width:900px){
